@@ -66,15 +66,17 @@ def query_text(query):
 
     bot.answer_inline_query(query.id, [article_1, article_5, article_10, article_20, article_50, article_100])
 
-@bot.inline_handler(lambda query: query == 0)
+@bot.inline_handler(lambda query: len(query.query) == 0)
 def empty_query(query):
     hint = "Wpisz intyfikatory walut: USD EUR PLN RUB BYN, żeby zobaczyć kursy walut"
     try:
         r = types.InlineQueryResultArticle(
-                id="12",title="Bot \"walutowy\"",
+                id="12",
+                title="Bot \"walutowy\"",
+                description=hint,
                 input_message_content=types.InputTextMessageContent(
-                    message_text="Mógłbym dowiedzieć się o kursie walut...",
-                    parse_mode="Markdown")
+                message_text="Mógłbym dowiedzieć się o kursie walut...",
+                parse_mode="Markdown")
         )
         bot.answer_inline_query(query.id, [r])
     except Exception as e:
