@@ -22,12 +22,13 @@ def query_text(query):
     if not scr in currencies or not tgt in currencies:
         return 
     # Zapisujemy adres żądania do API
-    url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base={scr}&symbols={tgt}"
+    #url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base={scr}&symbols={tgt}"
     # Wysłanie żądania GET do API
-    response = requests.get(url)
+    #response = requests.get(url)
     # Parsing (rozszyfrowanie) otrzymanej odpowiedzi
-    rate = response.json()['rates'][tgt]
-    
+    #rate = response.json()['rates'][tgt]
+    rate = any_walutes_function(scr, tgt)
+
     result = f"1 {scr} = {rate} {tgt}"
 
     article_1 = telebot.types.InlineQueryResultArticle(
@@ -82,5 +83,21 @@ def empty_query(query):
     except Exception as e:
         print(e)
 
+def any_walutes_function(cur1, cur2):
+    url2 = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur2}"
+
+    response = requests.get(url2)
+
+    rate2 = response.json()['rates'][cur2]
+    if cur1 == "USD":
+        return rate2
+    else:
+        url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur1}"
+
+        response = requests.get(url)
+
+        rate1 = response.json()['rates'][cur1]
+        rate = rate2/rate1
+        return rate
 
 bot.polling()
