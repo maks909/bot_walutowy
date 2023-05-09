@@ -16,11 +16,16 @@ currensy_pictures = {"USD":"https://telegra.ph/file/229e7bc4ef6f23d127cc3.png", 
 def query_text(query):
     # Dzielimy otrzymane w żądaniu informacje
     req = query.query.upper().split()
+    if len(req) == 1:
+        scr = req[0]
+        if not scr in currencies:
+            return
+        one_curency(scr, query)
     if len(req) != 2:
         return
     scr, tgt = req
     if not scr in currencies or not tgt in currencies:
-        return 
+        return
     # Zapisujemy adres żądania do API
     #url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base={scr}&symbols={tgt}"
     # Wysłanie żądania GET do API
@@ -99,5 +104,23 @@ def any_walutes_function(cur1, cur2):
         rate1 = response.json()['rates'][cur1]
         rate = rate2/rate1
         return rate
+
+def one_curency(cur1, query):
+    results = []
+    articles = []
+    i = 0
+    for cur2 in currencies:
+        if cur1 != cur2:
+            rate = any_walutes_function(cur1, cur2)
+            result = f"1 {cur1} = {rate} {cur2}"
+            results.append(result)
+            article = telebot.types.InlineQueryResultArticle(
+                id=i, title=cur2, description=results[i],
+                input_message_content=telebot.types.InputTextMessageContent(message_text=results[i]),
+                thumb_url=currensy_pictures[cur2], thumb_width=64, thumb_height=64)
+            articles.append(article)
+            i += 1
+    
+    bot.answer_inline_query(query.id, articles)
 
 bot.polling()
