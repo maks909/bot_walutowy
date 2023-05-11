@@ -192,7 +192,8 @@ def komunikat_o_błędzie(query):
     result = "Nic dobrego nie wpisałem... A mogłem :("
     article = telebot.types.InlineQueryResultArticle(
         id=1, title="Coś jest żle :(", description=descr,
-        input_message_content=telebot.types.InputTextMessageContent(message_text=result))
+        input_message_content=telebot.types.InputTextMessageContent(message_text=result),
+        thumb_url="https://telegra.ph/file/5009881abb1a4f2f8cc82.png", thumb_width=64, thumb_height=64)
 
     bot.answer_inline_query(query.id, [article])
 
