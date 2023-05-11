@@ -9,9 +9,9 @@ plik.close()
 bot = telebot.TeleBot(TOKEN)
 OPENEXCHANGE_API_KEY = "9c157b50feae410d85148894079c06ca"
 
-currencies = ("USD", "EUR", "PLN", "RUB", "BYN")
+currencies = ("USD", "EUR", "PLN", "RUB", "BYN", "GBP", "CNY", "CHF", "UAH", "JPY")
 
-currensy_pictures = {"USD":"https://telegra.ph/file/229e7bc4ef6f23d127cc3.png", "EUR":"https://telegra.ph/file/abd077de4d9ab557c77b8.png", "PLN":"https://telegra.ph/file/45d7c30e714afa69f8e36.png", "RUB":"https://telegra.ph/file/564592554d733e6e29724.png", "BYN":"https://telegra.ph/file/93a67e8a5a62a18354b3e.png"}
+currensy_pictures = {"USD":"https://telegra.ph/file/229e7bc4ef6f23d127cc3.png", "EUR":"https://telegra.ph/file/abd077de4d9ab557c77b8.png", "PLN":"https://telegra.ph/file/45d7c30e714afa69f8e36.png", "RUB":"https://telegra.ph/file/564592554d733e6e29724.png", "BYN":"https://telegra.ph/file/93a67e8a5a62a18354b3e.png", "GBP":"https://telegra.ph/file/6e99f7dcf172b7b802ffb.png", "CNY":"https://telegra.ph/file/ed8cec61f2943bcfb9f5a.png", "CHF":"https://telegra.ph/file/e672f46428eb3612c8311.png", "UAH":"https://telegra.ph/file/20d4d140fa6cc5b7deb1f.png", "JPY":"https://telegra.ph/file/0ed34d05c60533bc85eb2.png"}
 
 number_pictures = {1:"https://telegra.ph/file/31f2b3d588e89638e5c20.png", 5:"https://telegra.ph/file/8e5155ea17c4eef7c0f11.png", 10:"https://telegra.ph/file/3f3b2e0d83d82dd1b69a2.png", 20:"https://telegra.ph/file/2f43f402eb5054de068b9.png", 50:"https://telegra.ph/file/864c79280630d1e6837ae.png", 100:"https://telegra.ph/file/7b284263ea92b9ca95cef.png"}
 
