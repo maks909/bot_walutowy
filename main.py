@@ -29,6 +29,11 @@ def query_text(query):
         if not scr in currencies or not tgt in currencies:
             return
         two_curencies(scr, tgt, query)
+    elif len(req) == 3 and isnumeric(req[2]):
+        scr, tgt, number = req
+        if not scr in currencies or not tgt in currencies:
+            return
+        two_curencies_with_number(scr, tgt, float(number), query)
     else:
         return
 
@@ -64,7 +69,7 @@ def any_walutes_function(cur1, cur2):
 
     rate2 = response.json()['rates'][cur2]
     if cur1 == "USD":
-        return rate2
+        return round(rate2, 2)
     else:
         url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur1}"
 
@@ -72,7 +77,7 @@ def any_walutes_function(cur1, cur2):
 
         rate1 = response.json()['rates'][cur1]
         rate = rate2/rate1
-        return rate
+        return round(rate, 2)
 
 def one_curency(cur1, query):
     results = []
@@ -133,5 +138,20 @@ def two_curencies(scr, tgt, query):
 
     bot.answer_inline_query(query.id, [article_1, article_5, article_10, article_20, article_50, article_100])
 
+def two_curencies_with_number(scr, tgt, scr_number, query):
+    rate = any_walutes_function(scr, tgt)
+    result = f"{scr_number} {scr} = {rate * scr_number} {tgt}"
+    article = telebot.types.InlineQueryResultArticle(
+    id=1, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
+    thumb_url=currensy_pictures[tgt], thumb_width=64, thumb_height=64)
+
+    bot.answer_inline_query(query.id, [article])
+
+def isnumeric(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 bot.polling()
