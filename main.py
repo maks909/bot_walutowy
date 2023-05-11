@@ -73,7 +73,7 @@ def any_walutes_function(cur1, cur2):
 
     rate2 = response.json()['rates'][cur2]
     if cur1 == "USD":
-        return round(rate2, 2)
+        return rate2
     else:
         url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur1}"
 
@@ -81,7 +81,7 @@ def any_walutes_function(cur1, cur2):
 
         rate1 = response.json()['rates'][cur1]
         rate = rate2/rate1
-        return round(rate, 2)
+        return rate
 
 def one_curency(cur1, query):
     results = []
@@ -90,7 +90,7 @@ def one_curency(cur1, query):
     for cur2 in currencies:
         if cur1 != cur2:
             rate = any_walutes_function(cur1, cur2)
-            result = f"1 {cur1} = {rate} {cur2}"
+            result = f"1 {cur1} = {round(rate, 4)} {cur2}"
             results.append(result)
             article = telebot.types.InlineQueryResultArticle(
                 id=i, title=cur2, description=results[i],
@@ -104,37 +104,37 @@ def one_curency(cur1, query):
 def two_curencies(scr, tgt, query):
     rate = any_walutes_function(scr, tgt)
 
-    result = f"1 {scr} = {rate} {tgt}"
+    result = f"1 {scr} = {round(rate, 4)} {tgt}"
 
     article_1 = telebot.types.InlineQueryResultArticle(
         id=1, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
         thumb_url=number_pictures[1], thumb_width=64, thumb_height=64)
 
-    result = f"5 {scr} = {rate * 5} {tgt}"
+    result = f"5 {scr} = {round(rate * 5, 2)} {tgt}"
 
     article_5 = telebot.types.InlineQueryResultArticle(
         id=2, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
         thumb_url=number_pictures[5], thumb_width=64, thumb_height=64)
     
-    result = f"10 {scr} = {rate * 10} {tgt}"
+    result = f"10 {scr} = {round(rate * 10, 2)} {tgt}"
 
     article_10 = telebot.types.InlineQueryResultArticle(
         id=3, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
         thumb_url=number_pictures[10], thumb_width=64, thumb_height=64)
 
-    result = f"20 {scr} = {rate * 20} {tgt}"
+    result = f"20 {scr} = {round(rate * 20, 2)} {tgt}"
 
     article_20 = telebot.types.InlineQueryResultArticle(
         id=4, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
         thumb_url=number_pictures[20], thumb_width=64, thumb_height=64)
 
-    result = f"50 {scr} = {rate * 50} {tgt}"
+    result = f"50 {scr} = {round(rate * 50,  2)} {tgt}"
 
     article_50 = telebot.types.InlineQueryResultArticle(
         id=5, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
         thumb_url=number_pictures[50], thumb_width=64, thumb_height=64)
 
-    result = f"100 {scr} = {rate * 100} {tgt}"
+    result = f"100 {scr} = {round(rate * 100, 2)} {tgt}"
 
     article_100 = telebot.types.InlineQueryResultArticle(
         id=6, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
@@ -144,7 +144,10 @@ def two_curencies(scr, tgt, query):
 
 def two_curencies_with_number(scr, tgt, scr_number, query):
     rate = any_walutes_function(scr, tgt)
-    result = f"{scr_number} {scr} = {rate * scr_number} {tgt}"
+    if scr == 1:
+        result = f"{scr_number} {scr} = {round(rate * scr_number, 4)} {tgt}"
+    else:
+        result = f"{scr_number} {scr} = {round(rate * scr_number, 2)} {tgt}"
     article = telebot.types.InlineQueryResultArticle(
     id=1, title=result, input_message_content=telebot.types.InputTextMessageContent(message_text=result),
     thumb_url=currensy_pictures[tgt], thumb_width=64, thumb_height=64)
