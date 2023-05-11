@@ -64,7 +64,7 @@ def query_text(query):
 
 @bot.inline_handler(lambda query: len(query.query) == 0)
 def empty_query(query):
-    hint = "Wpisz intyfikatory walut: USD EUR PLN RUB BYN, żeby zobaczyć kursy walut"
+    hint = "Wpisz intyfikatory walut: USD EUR PLN RUB BYN GBP CNY CHF UAH JPY, żeby zobaczyć kursy walut"
     try:
         r = types.InlineQueryResultArticle(
                 id="12",
