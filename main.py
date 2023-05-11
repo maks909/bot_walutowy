@@ -25,6 +25,18 @@ def query_text(query):
             komunikat_o_błędzie(query)
             return
         one_curency(scr, query)
+    elif len(req) == 2 and isnumeric(req[0]):
+        number, scr = req
+        if not scr in currencies:
+            komunikat_o_błędzie(query)
+            return
+        one_curency_with_number(scr, float(number), query)
+    elif len(req) == 2 and isnumeric(req[1]):
+        scr, number = req
+        if not scr in currencies:
+            komunikat_o_błędzie(query)
+            return
+        one_curency_with_number(scr, float(number), query)
     elif len(req) == 2:
         scr, tgt = req
         if not scr in currencies or not tgt in currencies:
@@ -153,6 +165,27 @@ def two_curencies_with_number(scr, tgt, scr_number, query):
     thumb_url=currensy_pictures[tgt], thumb_width=64, thumb_height=64)
 
     bot.answer_inline_query(query.id, [article])
+
+def one_curency_with_number(cur1, scr_number, query):
+    results = []
+    articles = []
+    i = 0
+    for cur2 in currencies:
+        if cur1 != cur2:
+            rate = any_walutes_function(cur1, cur2)
+            if 0 < scr_number < 2:
+                result = f"{scr_number} {cur1} = {round(rate * scr_number, 4)} {cur2}"
+            else:
+                result = f"{scr_number} {cur1} = {round(rate * scr_number, 2)} {cur2}"
+            results.append(result)
+            article = telebot.types.InlineQueryResultArticle(
+                id=i, title=cur2, description=results[i],
+                input_message_content=telebot.types.InputTextMessageContent(message_text=results[i]),
+                thumb_url=currensy_pictures[cur2], thumb_width=64, thumb_height=64)
+            articles.append(article)
+            i += 1
+    
+    bot.answer_inline_query(query.id, articles)
 
 def komunikat_o_błędzie(query):
     descr = "Coś żle wpisałeś. Wpisz intyfikatory walut: USD EUR PLN RUB BYN, żeby zobaczyć kursy walut. Możesz też dodać liczbę pieniędzy na końcu."
