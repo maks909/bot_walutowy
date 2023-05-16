@@ -15,6 +15,24 @@ currensy_pictures = {"USD":"https://telegra.ph/file/229e7bc4ef6f23d127cc3.png", 
 
 number_pictures = {1:"https://telegra.ph/file/31f2b3d588e89638e5c20.png", 5:"https://telegra.ph/file/8e5155ea17c4eef7c0f11.png", 10:"https://telegra.ph/file/3f3b2e0d83d82dd1b69a2.png", 20:"https://telegra.ph/file/2f43f402eb5054de068b9.png", 50:"https://telegra.ph/file/864c79280630d1e6837ae.png", 100:"https://telegra.ph/file/7b284263ea92b9ca95cef.png"}
 
+@bot.message_handler(commands=["start"])
+def początek(m):
+    bot.send_message(m.chat.id, " Jestem botem do pomocy w napisaniu walut. \n Możesz mnie zawołać w każdym czacie z pomocą @currency_rate_help_bot I nazw walut. \n Dowiesz się więcej jeżeli napiszesz /help.")
+
+@bot.message_handler(commands=["help"])
+def pomoc(m):
+    bot.send_message(chat_id=m.chat.id, text="Teraz opowiem panu/pani jak mnie używać. :)")
+    bot.send_message(chat_id=m.chat.id, text="Możesz mnie używać w jakim kolwiek czacie. \nPoprostu napisz moje imię (@currency_rate_help_bot) i kilka innych rzeczy, póżniej wybierz coś w liście sugestii i kiedy wyślisz wiadomość będzie widać tylko coś podobnego do x USD = y EUR.")
+    bot.send_message(chat_id=m.chat.id, text='''Przykłady:
+    1) Napisz @currency_rate_help_bot i dwie waluty. Np. @currency_rate_help_bot PLN EUR.
+    
+    2) Napisz @currency_rate_help_bot i jedną walutę. Np. @currency_rate_help_bot PLN.
+    
+    3) Napisz @currency_rate_help_bot, dwie waluty i liczbę pieniędzy do wymiany. Np. @currency_rate_help_bot PLN USD 23 albo @currency_rate_help_bot PLN USD 23.50.
+    
+    4) Napisz @currency_rate_help_bot, jedną walutę i liczbę pieniędzy. Np. @currency_rate_help_bot PLN 105 albo @currency_rate_help_bot PLN 105.67.''')
+
+
 @bot.inline_handler(lambda query: query.query)
 def query_text(query):
     # Dzielimy otrzymane w żądaniu informacje
