@@ -2,6 +2,8 @@ import telebot
 import requests
 from telebot import types
 
+#Spetial thank's for flaticon.com for it's icons
+
 plik = open("TOKEN.ini")
 TOKEN = plik.read()
 plik.close()
