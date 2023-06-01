@@ -1,6 +1,7 @@
 import telebot
 import requests
 from telebot import types
+import time
 
 #Spetial thank's for flaticon.com for it's icons
 
@@ -98,21 +99,39 @@ def empty_query(query):
     except Exception as e:
         print(e)
 
+# def any_walutes_function(cur1, cur2):
+#     url2 = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur2}"
+
+#     response = requests.get(url2)
+
+#     rate2 = response.json()['rates'][cur2]
+#     if cur1 == "USD":
+#         return rate2
+#     else:
+#         url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur1}"
+
+#         response = requests.get(url)
+
+#         rate1 = response.json()['rates'][cur1]
+#         rate = rate2/rate1
+#         return rate
+
+last_time = time.time() - 3600
+currency_rates={}
+ 
 def any_walutes_function(cur1, cur2):
-    url2 = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur2}"
-
-    response = requests.get(url2)
-
-    rate2 = response.json()['rates'][cur2]
-    if cur1 == "USD":
-        return rate2
-    else:
-        url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols={cur1}"
+    global last_time
+    global currency_rates
+    if time.time() - last_time >= 3600:
+        url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols="
 
         response = requests.get(url)
+        currency_rates = response.json()['rates']
 
-        rate1 = response.json()['rates'][cur1]
-        rate = rate2/rate1
+    if cur1 == "USD":
+            return currency_rates[cur2]
+    else:
+        rate = currency_rates[cur2]/currency_rates[cur1]
         return rate
 
 def one_curency(cur1, query):
