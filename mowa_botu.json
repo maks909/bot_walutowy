@@ -1,0 +1,21 @@
+{
+  "chat": {
+    "start" : " Jestem botem do pomocy w napisaniu walut. \n Możesz mnie zawołać w każdym czacie z pomocą @currency_rate_help_bot I nazw walut. \n Dowiesz się więcej jeżeli napiszesz /help."
+  ,
+    "help": {
+      "początek" : "Teraz opowiem panu/pani jak mnie używać. :)",
+      "opowiadanie" : "Możesz mnie używać w jakim kolwiek czacie. \nPoprostu napisz moje imię (@currency_rate_help_bot) i kilka innych rzeczy, póżniej wybierz coś w liście sugestii i kiedy wyślisz wiadomość będzie widać tylko coś podobnego do x USD = y EUR.",
+      "przykłady" : "Przykłady:\n1) Napisz @currency_rate_help_bot i dwie waluty. Np. @currency_rate_help_bot PLN EUR.\n\n2) Napisz @currency_rate_help_bot i jedną walutę. Np. @currency_rate_help_bot PLN.\n\n3) Napisz @currency_rate_help_bot, dwie waluty i liczbę pieniędzy do wymiany. Np. @currency_rate_help_bot PLN USD 23 albo @currency_rate_help_bot PLN USD 23.50.\n\n4) Napisz @currency_rate_help_bot, jedną walutę i liczbę pieniędzy. Np. @currency_rate_help_bot PLN 105 albo @currency_rate_help_bot PLN 105.67."}
+    }
+      ,
+  "inline" : {
+    "hint" : {
+      "text" : "Wpisz intyfikatory walut: USD EUR PLN RUB BYN GBP CNY CHF UAH JPY, żeby zobaczyć kursy walut",
+      "no_tekst_messege" : "Mógłbym dowiedzieć się o kursie walut..."},
+      "title" : "Bot \"walutowy\""
+    ,
+      "error" : {"text" : "Coś żle wpisałeś. Wpisz intyfikatory walut: USD EUR PLN RUB BYN, żeby zobaczyć kursy walut. Możesz też dodać liczbę pieniędzy na końcu.",
+        "no_tekst_messege" : "Nic dobrego nie wpisałem... A mogłem :(",
+        "title" : "Coś jest żle :("}
+    }
+}
