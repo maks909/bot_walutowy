@@ -2,6 +2,11 @@ import telebot
 import requests
 from telebot import types
 import time
+import json
+
+with open("mowa_botu.json", "r", encoding="utf-8") as p:
+    mowa_botu = json.load(p)
+p.close()
 
 #Spetial thank's for flaticon.com for it's icons
 
@@ -18,23 +23,15 @@ currensy_pictures = {"USD":"https://telegra.ph/file/229e7bc4ef6f23d127cc3.png", 
 
 number_pictures = {1:"https://telegra.ph/file/31f2b3d588e89638e5c20.png", 5:"https://telegra.ph/file/8e5155ea17c4eef7c0f11.png", 10:"https://telegra.ph/file/3f3b2e0d83d82dd1b69a2.png", 20:"https://telegra.ph/file/2f43f402eb5054de068b9.png", 50:"https://telegra.ph/file/864c79280630d1e6837ae.png", 100:"https://telegra.ph/file/7b284263ea92b9ca95cef.png"}
 
-@bot.message_handler(commands=["start"])
+@bot.message_handler(commands=["start"])#" Jestem botem do pomocy w napisaniu walut. \n Możesz mnie zawołać w każdym czacie z pomocą @currency_rate_help_bot I nazw walut. \n Dowiesz się więcej jeżeli napiszesz /help.")
 def początek(m):
-    bot.send_message(m.chat.id, " Jestem botem do pomocy w napisaniu walut. \n Możesz mnie zawołać w każdym czacie z pomocą @currency_rate_help_bot I nazw walut. \n Dowiesz się więcej jeżeli napiszesz /help.")
+    bot.send_message(m.chat.id, mowa_botu["chat"]["start"])
 
 @bot.message_handler(commands=["help"])
 def pomoc(m):
-    bot.send_message(chat_id=m.chat.id, text="Teraz opowiem panu/pani jak mnie używać. :)")
-    bot.send_message(chat_id=m.chat.id, text="Możesz mnie używać w jakim kolwiek czacie. \nPoprostu napisz moje imię (@currency_rate_help_bot) i kilka innych rzeczy, póżniej wybierz coś w liście sugestii i kiedy wyślisz wiadomość będzie widać tylko coś podobnego do x USD = y EUR.")
-    bot.send_message(chat_id=m.chat.id, text='''Przykłady:
-    1) Napisz @currency_rate_help_bot i dwie waluty. Np. @currency_rate_help_bot PLN EUR.
-    
-    2) Napisz @currency_rate_help_bot i jedną walutę. Np. @currency_rate_help_bot PLN.
-    
-    3) Napisz @currency_rate_help_bot, dwie waluty i liczbę pieniędzy do wymiany. Np. @currency_rate_help_bot PLN USD 23 albo @currency_rate_help_bot PLN USD 23.50.
-    
-    4) Napisz @currency_rate_help_bot, jedną walutę i liczbę pieniędzy. Np. @currency_rate_help_bot PLN 105 albo @currency_rate_help_bot PLN 105.67.''')
-
+    bot.send_message(chat_id=m.chat.id, text=mowa_botu["chat"]["help"]["początek"])
+    bot.send_message(chat_id=m.chat.id, text=mowa_botu["chat"]["help"]["opowiadanie"])
+    bot.send_message(chat_id=m.chat.id, text=mowa_botu["chat"]["help"]["przykłady"])
 
 @bot.inline_handler(lambda query: query.query)
 def query_text(query):
@@ -85,14 +82,14 @@ def query_text(query):
 
 @bot.inline_handler(lambda query: len(query.query) == 0)
 def empty_query(query):
-    hint = "Wpisz intyfikatory walut: USD EUR PLN RUB BYN GBP CNY CHF UAH JPY, żeby zobaczyć kursy walut"
+    hint = mowa_botu["inline"]["hint"]["text"]
     try:
         r = types.InlineQueryResultArticle(
                 id="12",
-                title="Bot \"walutowy\"",
+                title=mowa_botu["inline"]["hint"]["title"],
                 description=hint,
                 input_message_content=types.InputTextMessageContent(
-                message_text="Mógłbym dowiedzieć się o kursie walut...",
+                message_text=mowa_botu["inline"]["hint"]["no_tekst_messege"],
                 parse_mode="Markdown")
         )
         bot.answer_inline_query(query.id, [r])
@@ -227,10 +224,10 @@ def one_curency_with_number(cur1, scr_number, query):
     bot.answer_inline_query(query.id, articles)
 
 def komunikat_o_błędzie(query):
-    descr = "Coś żle wpisałeś. Wpisz intyfikatory walut: USD EUR PLN RUB BYN, żeby zobaczyć kursy walut. Możesz też dodać liczbę pieniędzy na końcu."
-    result = "Nic dobrego nie wpisałem... A mogłem :("
+    descr = mowa_botu["inline"]["error"]["text"]
+    result = mowa_botu["inline"]["error"]["no_tekst_messege"]
     article = telebot.types.InlineQueryResultArticle(
-        id=1, title="Coś jest żle :(", description=descr,
+        id=1, title= mowa_botu["inline"]["error"]["title"], description=descr,
         input_message_content=telebot.types.InputTextMessageContent(message_text=result),
         thumb_url="https://telegra.ph/file/5009881abb1a4f2f8cc82.png", thumb_width=64, thumb_height=64)
 
