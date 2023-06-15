@@ -57,8 +57,10 @@ def zapis_liczby(m):
         prawdziwy_kurs = round(any_walutes_function(pierwsza_waluta, druga_waluta), 2)
         if abs(user_hint - prawdziwy_kurs) < 0.5:
             bot.send_message(chat_id=m.chat.id, text=f"Dobrze odgadnełeś, gratulacje!!\nPrawdziwy kurs to: {prawdziwy_kurs}")
+            gra_działa = False
         else:
             bot.send_message(chat_id=m.chat.id, text=f"Trochę się nie udało!\nPrawdziwy kurs to: {prawdziwy_kurs}.")
+            gra_działa = False
 
 @bot.inline_handler(lambda query: query.query)
 def query_text(query):
