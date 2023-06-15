@@ -33,6 +33,33 @@ def pomoc(m):
     bot.send_message(chat_id=m.chat.id, text=mowa_botu["chat"]["help"]["opowiadanie"])
     bot.send_message(chat_id=m.chat.id, text=mowa_botu["chat"]["help"]["przykłady"])
 
+import random
+
+gra_działa=False
+@bot.message_handler(commands=["game"])
+def game(m):
+    global gra_działa
+    gra_działa = True
+    bot.send_message(chat_id=m.chat.id, text="Zagrajmy w grę \"odgadnij kurs waluty\". \n Musisz odgadnąć kurs dowolnej pary walut.")
+    any_walutes_function("USD", "EUR")
+    global pierwsza_waluta
+    global druga_waluta
+    pierwsza_waluta = random.choice(lista_walut)
+    druga_waluta = random.choice(lista_walut)
+    bot.send_message(chat_id=m.chat.id, text=f"Ogadnij kurs walut {pierwsza_waluta} i {druga_waluta}")
+
+@bot.message_handler(content_types=["text"])
+def zapis_liczby(m):
+    global gra_działa
+    if gra_działa:
+        global user_hint
+        user_hint = float(m.text)
+        prawdziwy_kurs = round(any_walutes_function(pierwsza_waluta, druga_waluta), 2)
+        if abs(user_hint - prawdziwy_kurs) < 0.5:
+            bot.send_message(chat_id=m.chat.id, text=f"Dobrze odgadnełeś, gratulacje!!\nPrawdziwy kurs to: {prawdziwy_kurs}")
+        else:
+            bot.send_message(chat_id=m.chat.id, text=f"Trochę się nie udało!\nPrawdziwy kurs to: {prawdziwy_kurs}.")
+
 @bot.inline_handler(lambda query: query.query)
 def query_text(query):
     # Dzielimy otrzymane w żądaniu informacje
@@ -119,11 +146,13 @@ currency_rates={}
 def any_walutes_function(cur1, cur2):
     global last_time
     global currency_rates
+    global lista_walut
     if time.time() - last_time >= 3600:
         url = f"https://openexchangerates.org/api/latest.json?app_id={OPENEXCHANGE_API_KEY}&base=USD&symbols="
 
         response = requests.get(url)
         currency_rates = response.json()['rates']
+        lista_walut = list(dict.keys(currency_rates))
 
     if cur1 == "USD":
             return currency_rates[cur2]
